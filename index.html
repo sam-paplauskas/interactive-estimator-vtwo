@@ -1,0 +1,42 @@
+import { useState } from "react";
+
+export default function DaphniaEstimator() {
+  const [fecund, setFecund] = useState(30);
+  const [birth, setBirth] = useState(3);
+  const [success, setSuccess] = useState(9.15);
+  const [skill, setSkill] = useState(1);
+
+  const embryosPerDay = fecund * birth * (success / 100) * skill;
+  const daysPerChimera = embryosPerDay > 0 ? 1 / embryosPerDay : 0;
+
+  return (
+    <div style={{ padding: "20px", fontFamily: "Arial" }}>
+      <h2>Daphnia Microinjection Time Estimator</h2>
+
+      <div>
+        <label>Fecundity (embryos per mother): {fecund}</label>
+        <input type="range" min="10" max="50" value={fecund} onChange={(e) => setFecund(Number(e.target.value))} />
+      </div>
+
+      <div>
+        <label>Birth rate (mothers per day): {birth}</label>
+        <input type="range" min="0" max="10" value={birth} onChange={(e) => setBirth(Number(e.target.value))} />
+      </div>
+
+      <div>
+        <label>Combined success rate (%): {success.toFixed(2)}</label>
+        <input type="range" min="0" max="30" step="0.1" value={success} onChange={(e) => setSuccess(Number(e.target.value))} />
+      </div>
+
+      <div>
+        <label>User skill multiplier: {skill.toFixed(2)}</label>
+        <input type="range" min="0.1" max="1.5" step="0.05" value={skill} onChange={(e) => setSkill(Number(e.target.value))} />
+      </div>
+
+      <div style={{ marginTop: "20px" }}>
+        <p><strong>Embryos injected per day:</strong> {embryosPerDay.toFixed(2)}</p>
+        <p><strong>Days to obtain one chimeric embryo:</strong> {daysPerChimera.toFixed(2)}</p>
+      </div>
+    </div>
+  );
+}
