@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daphnia Microinjection Time Estimator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 30px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    input[type=range] {
+      width: 100%;
+    }
+    .results {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Daphnia Microinjection Time Estimator</h2>
+
+  <div class="section">
+    <label>Fecundity (embryos per mother): <span id="fecundVal">30</span></label>
+    <input type="range" min="10" max="50" step="1" value="30" id="fecund">
+  </div>
+
+  <div class="section">
+    <label>Birth rate (mothers per day): <span id="birthVal">3</span></label>
+    <input type="range" min="0" max="10" step="1" value="3" id="birth">
+  </div>
+
+  <div class="section">
+    <label>Combined success rate (%): <span id="successVal">9.15</span></label>
+    <input type="range" min="0" max="30" step="0.1" value="9.15" id="success">
+  </div>
+
+  <div class="section">
+    <label>User skill multiplier: <span id="skillVal">1.00</span></label>
+    <input type="range" min="0.1" max="1.5" step="0.05" value="1" id="skill">
+  </div>
+
+  <div class="results">
+    <p>Total number of chimeric embryos produced: <span id="epd">0</span></p>
+    <p>Days to obtain one chimeric embryo: <span id="days">0</span></p>
+  </div>
+</div>
+
+<script>
+function update() {
+  const fecund = parseFloat(document.getElementById("fecund").value);
+  const birth = parseFloat(document.getElementById("birth").value);
+  const success = parseFloat(document.getElementById("success").value);
+  const skill = parseFloat(document.getElementById("skill").value);
+
+  document.getElementById("fecundVal").innerText = fecund;
+  document.getElementById("birthVal").innerText = birth;
+  document.getElementById("successVal").innerText = success.toFixed(2);
+  document.getElementById("skillVal").innerText = skill.toFixed(2);
+
+  const epd = fecund * birth * (success / 100) * skill;
+  const days = epd > 0 ? (1 / epd) : 0;
+
+  document.getElementById("epd").innerText = epd.toFixed(2);
+  document.getElementById("days").innerText = days.toFixed(2);
+}
+
+// Attach listeners
+document.querySelectorAll("input").forEach(el => {
+  el.addEventListener("input", update);
+});
+
+// Initial calculation
+update();
+</script>
+
+</body>
+</html>
